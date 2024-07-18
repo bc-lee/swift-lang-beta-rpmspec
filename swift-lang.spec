@@ -9,7 +9,7 @@
 
 %global linux_version fedora
 
-%global fedora_release 1.leebc9
+%global fedora_release 1.leebc10
 %global swift_source_location swift-source
 
 Source0: version.inc
@@ -32,6 +32,8 @@ Patch2:         enable_lzma.patch
 patch3:         resource_dir.patch
 Patch4:         preset.patch
 Patch5:         lldb-Adapt-code-to-Python-3.13-70445.patch
+Patch6:         std-function.patch
+Patch7:         libstdc++.patch
 
 BuildRequires:  clang
 BuildRequires:  swig
@@ -57,6 +59,8 @@ BuildRequires:  zlib-devel
 BuildRequires:  python-unversioned-command
 BuildRequires:  swiftlang
 BuildRequires:  lld
+# Test(banned_apis/banned_apis.test) requires git executable
+BuildRequires:  git
 
 Requires:       glibc-devel
 Requires:       binutils-gold
@@ -112,6 +116,14 @@ popd
 # TODO(bc-lee): Remove when https://github.com/swiftlang/llvm-project/pull/8980 is merged
 %patch -P5 -p0
 
+# Compilation failures with std::function
+# See https://github.com/swiftlang/swift/commit/af311ff0036350ce90526d6c7a1d92b73bbb8604
+%patch -P6 -p0
+
+# Swift tests are failing due to newer libstdc++ symbols.
+# https://github.com/swiftlang/swift/issues/75328
+%patch -P7 -p0
+
 %build
 export VERBOSE=1
 
@@ -150,6 +162,8 @@ export QA_SKIP_RPATHS=1
 
 
 %changelog
+* Thu Jul 18 2024 Byoungchan Lee <byoungchan.lee@gmx.com> - 6.0-1.leebc10
+- Various patches for making tests pass
 * Thu Jul 18 2024 Byoungchan Lee <byoungchan.lee@gmx.com> - 6.0-1.leebc9
 - Remove the patch for cmark
 * Thu Jul 18 2024 Byoungchan Lee <byoungchan.lee@gmx.com> - 6.0-1.leebc8
