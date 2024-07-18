@@ -9,7 +9,7 @@
 
 %global linux_version fedora
 
-%global fedora_release 1.leebc7
+%global fedora_release 1.leebc8
 %global swift_source_location swift-source
 
 Source0: version.inc
@@ -31,9 +31,8 @@ Patch1:         need_pic.patch
 Patch2:         no_pipes.patch
 Patch3:         enable_lzma.patch
 patch4:         resource_dir.patch
-Patch5:         CF_Not_Glibc.patch
-Patch6:         preset.patch
-Patch7:         lldb-Adapt-code-to-Python-3.13-70445.patch
+Patch5:         preset.patch
+Patch6:         lldb-Adapt-code-to-Python-3.13-70445.patch
 
 BuildRequires:  clang
 BuildRequires:  swig
@@ -110,16 +109,12 @@ pushd swift
 %patch -P4 -p1
 popd
 
-# https://forums.swift.org/t/cannot-build-toolchain-on-ubuntu-24-04-lts/72200
-# Temporary I hope
-%patch -P5 -p0
-
 # Don't build ninja. Instead, use the system's ninja
-%patch -P6 -p1
+%patch -P5 -p1
 
 # [lldb] Adapt code to Python 3.13
 # TODO(bc-lee): Remove when https://github.com/swiftlang/llvm-project/pull/8980 is merged
-%patch -P7 -p0
+%patch -P6 -p0
 
 %build
 export VERBOSE=1
@@ -159,6 +154,8 @@ export QA_SKIP_RPATHS=1
 
 
 %changelog
+* Thu Jul 18 2024 Byoungchan Lee <byoungchan.lee@gmx.com> - 6.0-1.lleebc8
+- Remove a workaround for swift-corelibs-foundation
 * Wed Jul 17 2024 Byoungchan Lee <byoungchan.lee@gmx.com> - 6.0-1.leebc7
 - Build packages with all tests and assertions
 * Wed Jul 17 2024 Byoungchan Lee <byoungchan.lee@gmx.com> - 6.0-1.leebc6
