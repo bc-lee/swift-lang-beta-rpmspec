@@ -9,7 +9,7 @@
 
 %global linux_version fedora
 
-%global fedora_release 1.leebc6
+%global fedora_release 1.leebc7
 %global swift_source_location swift-source
 
 Source0: version.inc
@@ -125,7 +125,7 @@ popd
 export VERBOSE=1
 
 # Here we go!
-swift/utils/build-script --preset=buildbot_linux,no_assertions,no_test install_destdir=%{_builddir} installable_package=%{_builddir}/swift-%{version}-%{linux_version}.tar.gz
+swift/utils/build-script --preset=buildbot_linux install_destdir=%{_builddir} installable_package=%{_builddir}/swift-%{version}-%{linux_version}.tar.gz
 
 
 %install
@@ -159,6 +159,8 @@ export QA_SKIP_RPATHS=1
 
 
 %changelog
+* Wed Jul 17 2024 Byoungchan Lee <byoungchan.lee@gmx.com> - 6.0-1.leebc7
+- Build packages with all tests and assertions
 * Wed Jul 17 2024 Byoungchan Lee <byoungchan.lee@gmx.com> - 6.0-1.leebc6
 - Build full package, without tests and assertions again
 * Wed Jul 17 2024 Byoungchan Lee <byoungchan.lee@gmx.com> - 6.0-1.leebc5
