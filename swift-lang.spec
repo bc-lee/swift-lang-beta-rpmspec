@@ -9,7 +9,7 @@
 
 %global linux_version fedora
 
-%global fedora_release 1.leebc8
+%global fedora_release 1.leebc9
 %global swift_source_location swift-source
 
 Source0: version.inc
@@ -27,12 +27,11 @@ URL:            https://www.swift.org
 
 %include %{SOURCE1}
 
-Patch1:         need_pic.patch
-Patch2:         no_pipes.patch
-Patch3:         enable_lzma.patch
-patch4:         resource_dir.patch
-Patch5:         preset.patch
-Patch6:         lldb-Adapt-code-to-Python-3.13-70445.patch
+Patch1:         no_pipes.patch
+Patch2:         enable_lzma.patch
+patch3:         resource_dir.patch
+Patch4:         preset.patch
+Patch5:         lldb-Adapt-code-to-Python-3.13-70445.patch
 
 BuildRequires:  clang
 BuildRequires:  swig
@@ -95,26 +94,23 @@ correct programs easier for the developer.
 %py3_shebang_fix swift/utils/api_checker/swift-api-checker.py
 %py3_shebang_fix llvm-project/compiler-rt/lib/hwasan/scripts/hwasan_symbolize
 
-# Enable PIC for cmark
+# Pipes has been removed in Python
 %patch -P1 -p0
 
-# Pipes has been removed in Python
-%patch -P2 -p0
-
 # Enable LZMA
-%patch -P3 -p0
+%patch -P2 -p0
 
 # https://github.com/swiftlang/swift/pull/74814
 pushd swift
-%patch -P4 -p1
+%patch -P3 -p1
 popd
 
 # Don't build ninja. Instead, use the system's ninja
-%patch -P5 -p1
+%patch -P4 -p1
 
 # [lldb] Adapt code to Python 3.13
 # TODO(bc-lee): Remove when https://github.com/swiftlang/llvm-project/pull/8980 is merged
-%patch -P6 -p0
+%patch -P5 -p0
 
 %build
 export VERBOSE=1
@@ -154,7 +150,9 @@ export QA_SKIP_RPATHS=1
 
 
 %changelog
-* Thu Jul 18 2024 Byoungchan Lee <byoungchan.lee@gmx.com> - 6.0-1.lleebc8
+* Thu Jul 18 2024 Byoungchan Lee <byoungchan.lee@gmx.com> - 6.0-1.leebc9
+- Remove the patch for cmark
+* Thu Jul 18 2024 Byoungchan Lee <byoungchan.lee@gmx.com> - 6.0-1.leebc8
 - Remove a workaround for swift-corelibs-foundation
 * Wed Jul 17 2024 Byoungchan Lee <byoungchan.lee@gmx.com> - 6.0-1.leebc7
 - Build packages with all tests and assertions
