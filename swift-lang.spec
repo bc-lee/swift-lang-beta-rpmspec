@@ -9,7 +9,7 @@
 
 %global linux_version fedora
 
-%global fedora_release 1.leebc10
+%global fedora_release 1.leebc11
 %global swift_source_location swift-source
 
 Source0: version.inc
@@ -34,6 +34,7 @@ Patch4:         preset.patch
 Patch5:         lldb-Adapt-code-to-Python-3.13-70445.patch
 Patch6:         std-function.patch
 Patch7:         libstdc++.patch
+Patch8:         clang-importer-tzdb.patch
 
 BuildRequires:  clang
 BuildRequires:  swig
@@ -124,6 +125,10 @@ popd
 # https://github.com/swiftlang/swift/issues/75328
 %patch -P7 -p0
 
+# [cxx-interop] Do not try to import `std::chrono::tzdb`
+# https://github.com/swiftlang/swift/issues/73037
+%patch -P8 -p0
+
 %build
 export VERBOSE=1
 
@@ -162,6 +167,8 @@ export QA_SKIP_RPATHS=1
 
 
 %changelog
+* Sat Jul 20 2024 Byoungchan Lee <byoungchan.lee@gmx.com> - 6.0-1.leebc11
+- [cxx-interop] Do not try to import `std::chrono::tzdb`
 * Thu Jul 18 2024 Byoungchan Lee <byoungchan.lee@gmx.com> - 6.0-1.leebc10
 - Various patches for making tests pass
 * Thu Jul 18 2024 Byoungchan Lee <byoungchan.lee@gmx.com> - 6.0-1.leebc9
