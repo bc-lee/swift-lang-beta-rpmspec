@@ -1,7 +1,6 @@
 --- swift-corelibs-xctest/Tests/Functional/lit.cfg
 +++ swift-corelibs-xctest/Tests/Functional/lit.cfg
-@@ -144,10 +144,14 @@ config.substitutions.append(('%{xctest_checker}', '%%{python} %s' % xctest_check
- config.substitutions.append( ('%{python}', pipes.quote(sys.executable)) )
+@@ -144,8 +144,12 @@ config.substitutions.append( ('%{python}', shlex.quote(sys.executable)) )
  
  # Conditionally report the Swift 5.5 Concurrency runtime as available depending on the OS and version.
 +# Darwin is the only platform where this is a limitation.
@@ -17,6 +16,3 @@
 +    # Non-Darwin platforms have a concurrency runtime
      config.available_features.add('concurrency_runtime')
  if run_os == 'Windows':
-     config.available_features.add('OS=windows')
--- 
-2.45.2
