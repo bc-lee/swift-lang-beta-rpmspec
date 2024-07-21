@@ -9,7 +9,7 @@
 
 %global linux_version fedora
 
-%global fedora_release 1.leebc16
+%global fedora_release 1.leebc17
 %global swift_source_location swift-source
 
 Source0: version.inc
@@ -184,6 +184,8 @@ export QA_SKIP_RPATHS=1
 
 
 %changelog
+* Mon Jul 22 2024Byoungchan Lee <byoungchan.lee@gmx.com> - 6.0-1.leebc17
+- Add more patches for Python 3.13
 * Sun Jul 21 2024 Byoungchan Lee <byoungchan.lee@gmx.com> - 6.0-1.leebc16
 - [swift-corelibs-foundation] Do not depend on the HAVE_STRLCAT and HAVE_STRLCPY preprocessor definitions
 * Sun Jul 21 2024 Byoungchan Lee <byoungchan.lee@gmx.com> - 6.0-1.leebc15
