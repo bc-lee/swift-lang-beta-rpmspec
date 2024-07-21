@@ -9,7 +9,7 @@
 
 %global linux_version fedora
 
-%global fedora_release 1.leebc15
+%global fedora_release 1.leebc16
 %global swift_source_location swift-source
 
 Source0: version.inc
@@ -36,7 +36,8 @@ Patch6:         std-function.patch
 Patch7:         libstdc++.patch
 Patch8:         clang-importer-tzdb.patch
 Patch9:         swift-corelibs-xctest-parse-version.patch
-Patch10:       skip-lldb-swift-consume-operator-async.patch
+Patch10:        skip-lldb-swift-consume-operator-async.patch
+Patch11:        cf-strlcpy.patch
 
 BuildRequires:  clang
 BuildRequires:  swig
@@ -141,6 +142,10 @@ popd
 # https://github.com/swiftlang/swift/issues/75353
 %patch -P10 -p0
 
+# [swift-corelibs-foundation] Do not depend on the HAVE_STRLCAT and HAVE_STRLCPY preprocessor definitions
+# https://github.com/apple/swift-corelibs-foundation/pull/5013
+%patch -P11 -p0
+
 %build
 export VERBOSE=1
 
@@ -179,6 +184,8 @@ export QA_SKIP_RPATHS=1
 
 
 %changelog
+* Sun Jul 21 2024 Byoungchan Lee <byoungchan.lee@gmx.com> - 6.0-1.leebc16
+- [swift-corelibs-foundation] Do not depend on the HAVE_STRLCAT and HAVE_STRLCPY preprocessor definitions
 * Sun Jul 21 2024 Byoungchan Lee <byoungchan.lee@gmx.com> - 6.0-1.leebc15
 - Fix broken patches
 * Sun Jul 21 2024 Byoungchan Lee <byoungchan.lee@gmx.com> - 6.0-1.leebc14
