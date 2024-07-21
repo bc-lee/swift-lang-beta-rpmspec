@@ -1,0 +1,10 @@
+--- llvm-project/lldb/test/API/lang/swift/variables/consume_operator_async/TestSwiftConsumeOperatorAsync.py
++++ llvm-project/lldb/test/API/lang/swift/variables/consume_operator_async/TestSwiftConsumeOperatorAsync.py
+@@ -24,6 +24,7 @@ import unittest2
+ def stderr_print(line):
+     sys.stderr.write(line + "\n")
+ 
++@unittest2.skip("Failures in Fedora. https://github.com/swiftlang/swift/issues/75353")
+ class TestSwiftConsumeOperatorAsyncType(TestBase):
+     @swiftTest
+     def test_swift_consume_operator_async(self):

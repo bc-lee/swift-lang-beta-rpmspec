@@ -9,7 +9,7 @@
 
 %global linux_version fedora
 
-%global fedora_release 1.leebc13
+%global fedora_release 1.leebc14
 %global swift_source_location swift-source
 
 Source0: version.inc
@@ -36,6 +36,7 @@ Patch6:         std-function.patch
 Patch7:         libstdc++.patch
 Patch8:         clang-importer-tzdb.patch
 Patch9:         swift-corelibs-xctest-parse-version.patch
+Patch10:       skip-lldb-swift-consume-operator-async.patch
 
 BuildRequires:  clang
 BuildRequires:  swig
@@ -136,6 +137,10 @@ popd
 # https://github.com/apple/swift-corelibs-xctest/pull/497
 %patch -P9 -p0
 
+# lldb's TestSwiftConsumeOperatorAsync.py Test Fails on Fedora
+# https://github.com/swiftlang/swift/issues/75353
+%patch -P10 -p0
+
 %build
 export VERBOSE=1
 
@@ -174,6 +179,9 @@ export QA_SKIP_RPATHS=1
 
 
 %changelog
+* Sun Jul 21 2024 Byoungchan Lee <byoungchan.lee@gmx.com> - 6.0-1.leebc14
+- Remove python's pipes import more
+- lldb's TestSwiftConsumeOperatorAsync.py Test Fails on Fedora
 * Sun Jul 21 2024 Byoungchan Lee <byoungchan.lee@gmx.com> - 6.0-1.leebc13
 - Increase number of sources to 46
 * Sat Jul 20 2024 Byoungchan Lee <byoungchan.lee@gmx.com> - 6.0-1.leebc12

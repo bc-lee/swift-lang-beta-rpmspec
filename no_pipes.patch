@@ -1,7 +1,6 @@
-diff --color -Naur llvm-project/clang/utils/creduce-clang-crash.py llvm-project/clang/utils/creduce-clang-crash.py
---- llvm-project/clang/utils/creduce-clang-crash.py	2024-06-13 19:54:42.303016942 -0500
-+++ llvm-project/clang/utils/creduce-clang-crash.py	2024-06-13 19:57:15.922473813 -0500
-@@ -15,7 +15,6 @@
+--- llvm-project/clang/utils/creduce-clang-crash.py
++++ llvm-project/clang/utils/creduce-clang-crash.py
+@@ -15,7 +15,6 @@ import shutil
  import stat
  import sys
  import subprocess
@@ -9,7 +8,7 @@ diff --color -Naur llvm-project/clang/utils/creduce-clang-crash.py llvm-project/
  import shlex
  import tempfile
  import shutil
-@@ -61,7 +60,7 @@
+@@ -61,7 +60,7 @@ def check_cmd(cmd_name, cmd_dir, cmd_path=None):
  
  
  def quote_cmd(cmd):
@@ -18,7 +17,7 @@ diff --color -Naur llvm-project/clang/utils/creduce-clang-crash.py llvm-project/
  
  
  def write_to_script(text, filename):
-@@ -220,7 +219,7 @@
+@@ -220,7 +219,7 @@ fi
          )
  
          for msg in self.expected_output:
@@ -27,9 +26,36 @@ diff --color -Naur llvm-project/clang/utils/creduce-clang-crash.py llvm-project/
  
          write_to_script(output, self.testfile)
          self.check_interestingness()
-diff --color -Naur llvm-project/libcxx/utils/libcxx/test/dsl.py llvm-project/libcxx/utils/libcxx/test/dsl.py
---- llvm-project/libcxx/utils/libcxx/test/dsl.py	2024-06-13 19:55:23.627829920 -0500
-+++ llvm-project/libcxx/utils/libcxx/test/dsl.py	2024-06-13 19:57:42.124257373 -0500
+--- llvm-project/compiler-rt/test/sanitizer_common/ios_commands/iossim_run.py
++++ llvm-project/compiler-rt/test/sanitizer_common/ios_commands/iossim_run.py
+@@ -1,6 +1,6 @@
+ #!/usr/bin/env python3
+ 
+-import glob, os, pipes, sys, subprocess
++import glob, os, shlex, sys, subprocess
+ 
+ 
+ device_id = os.environ.get("SANITIZER_IOSSIM_TEST_DEVICE_IDENTIFIER")
+@@ -50,7 +50,7 @@ if prog == "rm":
+             rm_args.append(arg)
+         else:
+             # FIXME(dliew): pipes.quote() is deprecated
+-            rm_args.append(pipes.quote(arg))
++            rm_args.append(shlex.quote(arg))
+     rm_cmd_line = ["/bin/rm"] + rm_args
+     rm_cmd_line_str = " ".join(rm_cmd_line)
+     # We use `shell=True` so that any wildcard globs get expanded by the shell.
+--- llvm-project/libcxx/test/libcxx/lit.local.cfg
++++ llvm-project/libcxx/test/libcxx/lit.local.cfg
+@@ -1,4 +1,4 @@
+ # The tests in this directory need to run Python
+-import pipes, sys
++import shlex, sys
+ 
+-config.substitutions.append(("%{python}", pipes.quote(sys.executable)))
++config.substitutions.append(("%{python}", shlex.quote(sys.executable)))
+--- llvm-project/libcxx/utils/libcxx/test/dsl.py
++++ llvm-project/libcxx/utils/libcxx/test/dsl.py
 @@ -8,7 +8,7 @@
  
  import os
@@ -39,7 +65,7 @@ diff --color -Naur llvm-project/libcxx/utils/libcxx/test/dsl.py llvm-project/lib
  import platform
  import re
  import shutil
-@@ -281,7 +281,7 @@
+@@ -281,7 +281,7 @@ def hasAnyLocale(config, locales):
        }
      #endif
    """
@@ -48,14 +74,32 @@ diff --color -Naur llvm-project/libcxx/utils/libcxx/test/dsl.py llvm-project/lib
  
  
  @_memoizeExpensiveOperation(lambda c, flags="": (c.substitutions, c.environment, flags))
-diff --color -Naur llvm-project/libcxx/utils/libcxx/test/format.py llvm-project/libcxx/utils/libcxx/test/format.py
---- llvm-project/libcxx/utils/libcxx/test/format.py	2024-06-13 19:55:23.627829920 -0500
-+++ llvm-project/libcxx/utils/libcxx/test/format.py	2024-06-13 19:58:01.911604299 -0500
-@@ -11,7 +11,7 @@
+--- llvm-project/libcxx/utils/libcxx/test/format.py
++++ llvm-project/libcxx/utils/libcxx/test/format.py
+@@ -11,7 +11,6 @@ import io
  import lit
  import lit.formats
  import os
 -import pipes
-+import shlex
  import re
  import shutil
+ 
+--- swift-corelibs-xctest/Tests/Functional/lit.cfg
++++ swift-corelibs-xctest/Tests/Functional/lit.cfg
+@@ -14,7 +14,6 @@ import tempfile
+ import shlex
+ import sys
+ import lit
+-import pipes
+ import re
+ 
+ # Set up lit config.
+@@ -141,7 +140,7 @@ xctest_checker = os.path.join(
+ config.substitutions.append(('%{xctest_checker}', '%%{python} %s' % xctest_checker))
+ 
+ # Add Python to run xctest_checker.py tests as part of XCTest tests
+-config.substitutions.append( ('%{python}', pipes.quote(sys.executable)) )
++config.substitutions.append( ('%{python}', shlex.quote(sys.executable)) )
+ 
+ # Conditionally report the Swift 5.5 Concurrency runtime as available depending on the OS and version.
+ # Darwin is the only platform where this is a limitation.
