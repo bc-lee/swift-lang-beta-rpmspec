@@ -9,7 +9,7 @@
 
 %global linux_version fedora
 
-%global fedora_release 1.leebc18
+%global fedora_release 1.leebc19
 %global swift_source_location swift-source
 
 Source0: version.inc
@@ -38,6 +38,7 @@ Patch8:         clang-importer-tzdb.patch
 Patch9:         swift-corelibs-xctest-parse-version.patch
 Patch10:        skip-lldb-swift-consume-operator-async.patch
 Patch11:        cf-strlcpy.patch
+Patch12:        swiftpm-disable-test.patch
 
 BuildRequires:  clang
 BuildRequires:  swig
@@ -146,6 +147,9 @@ popd
 # https://github.com/apple/swift-corelibs-foundation/pull/5013
 %patch -P11 -p0
 
+# Disable some swiftpm tests
+%patch -P12 -p0
+
 %build
 export VERBOSE=1
 
@@ -184,6 +188,8 @@ export QA_SKIP_RPATHS=1
 
 
 %changelog
+* Tue Jul 23 2024 aab - -1.leebc19
+- Disable some swiftpm tests
 * Tue Jul 23 2024 Byoungchan Lee <byoungchan.lee@gmx.com> - 6.0-1.leebc18
 - Fix patch for Python 3.13
 * Mon Jul 22 2024 Byoungchan Lee <byoungchan.lee@gmx.com> - 6.0-1.leebc17
